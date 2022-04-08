@@ -3,7 +3,7 @@ Robot with simple PID regulator and connection to server is developed using ROS
 
 Для корректной работы необходимо установить numpy и matplotlib.
 
-# Порядок действий
+## Порядок действий
 * Скопировать папку robot_sim в catckin_ws/src
 
 * Собрать проект <br/>
@@ -32,7 +32,7 @@ Robot with simple PID regulator and connection to server is developed using ROS
 
 * После остановки скрипта server.py будет выведен график, на котором изображена реальная траектория робота.
 
-# Изменение параметров
+## Изменение параметров
 * Чтобы изменить таргетные значения необходимо в файле ```robot_sim/scripts/server.py``` в части ```if __name__=="__main__"``` найти вызов функции ```sendToRobot (0.5, 0.5)``` и изменить параметры вызова: первый отвечает за линейную скорость робота, второй за угловую скорость. 
 * Чтобы изменить время регулирования необходимо в файле ```robot_sim/scripts/robot.py``` найти определение функции ```getNew(W1prev, W2prev, W1tar, W2tar)``` и заменить значение переменной ```T = 0.01``` на другое.
 * Чтобы получить 
