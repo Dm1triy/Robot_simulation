@@ -8,7 +8,7 @@ from robot_sim.msg import Encoder
 
 def getNew(W1prev, W2prev, W1tar, W2tar):
     t = 0.1
-    T = 0.01    ## чем больше Т тем быстрее происходит регуляция
+    T = 0.01    ## чем больше Т тем быстрее система переходит в устойчивый режим
     betta = t/(t+T)
     W1n = betta * W1prev + (1-betta)*W1tar
     W2n = betta * W2prev + (1-betta)*W2tar
@@ -64,7 +64,7 @@ def sendToServ(w1_tar, w2_tar):
         except rospy.ROSInterruptException:
             continue
             
-        rospy.loginfo(f"{frame_id}: Send to serv left {e1} and right {e2} Encoders.\n \
+        rospy.loginfo(f"{frame_id}: Send to serv left: {e1} and right: {e2} Encoders.\n \
 Sending time: {msg.header.stamp}")
 	
         message_id += 1
@@ -78,7 +78,8 @@ def robotCallback (data):
     omega = data.angular.z
 	
     rospy.loginfo(rospy.get_caller_id() + 
-                  f'Get from serv V: {V} and omega {omega} %s' % rospy.Time.now())
+                  f' Get from serv V: {V}(m/s) and omega {omega}(rad/s). \
+Getting time: %s' % rospy.Time.now())
 				  
     w1_tar, w2_tar = wheelVel(V, omega)
     

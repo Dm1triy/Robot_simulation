@@ -20,9 +20,29 @@ RobotVel = []                 ## V (m/s)
 RobotAngVel = []              ## omega (rad/s)
 RobotAng = [0]                ## theta (rad)
 Coordinates = [[0,0]]         ## x, y (m)
+IdealCoordinates = [[0,0]]    ## x_ideal, y_ideal (m)
 
 
 
+def drawIdealTrajectory():
+    ideal_V = RobotVel[-1]
+    ideal_omega = RobotAngVel[-1]
+    x_ideal = [0]
+    y_ideal = [0]
+    dt = 0.1
+    for i in range(len(Moments)-1):
+        ideal_theta = ideal_omega * dt * i 
+        x = ideal_V * np.cos(ideal_theta) * dt
+        x_ideal.append(x + x_ideal[-1])
+        y = ideal_V * np.sin(ideal_theta) * dt
+        y_ideal.append(y + y_ideal[-1])
+        
+    plt.plot(x_ideal, y_ideal)
+    plt.title("ideal")
+    plt.show()
+        
+        
+        
 def publishCoordinates(x, y, theta):
     pub = rospy.Publisher('Debugging', Pose2D, queue_size = 10)
     
@@ -33,9 +53,9 @@ def publishCoordinates(x, y, theta):
     
     pub.publish(pose)
     
-    rospy.loginfo(rospy.get_caller_id() + 
-                  f' Send to debugging coordinates x = {x}(m), y = {y}(m),\
-theta = {theta}rad.\n Sending time: {rospy.Time.now()}') 
+    rospy.loginfo(f' Send to debugging coordinates x = {x}(m), y = {y}(m), \
+theta = {theta}(rad).\n Sending time: {rospy.Time.now()}') 
+
 
 
 def coordinates ():				# координаты 
@@ -130,7 +150,7 @@ def sendToRobot(V, omega):
         pub.publish(vel)
         rate.sleep()
         
-    rospy.loginfo(f"send to robot V:{V}, omega: {omega} %s" % rospy.Time.now())
+    rospy.loginfo(f"Send to robot V: {V}(m/s), omega: {omega}(rad/s). Sending time: %s" % rospy.Time.now())
     
     
     
@@ -144,7 +164,8 @@ if __name__=="__main__":
     y = [i[1] for i in Coordinates]
     
     plt.plot(x, y)
+    plt.title("real")
     plt.show()
-	
+    drawIdealTrajectory()
 	
 	
