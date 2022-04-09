@@ -1,5 +1,5 @@
 # Robot_simulation
-Robot with simple PID regulator and connection to server is developed using ROS
+Robot with simple regulator and connection to server is developed using ROS
 
 Для корректной работы необходимо установить numpy и matplotlib.
 
